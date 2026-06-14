@@ -2,9 +2,11 @@ name: Codzienne pobieranie grantow
 
 on:
   schedule:
-    # Uruchamiaj codziennie o 4:00 rano
     - cron: '0 4 * * *'
-  workflow_dispatch: # Ta linijka pozwala uruchomić skrypt ręcznie w dowolnym momencie
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -24,7 +26,12 @@ jobs:
         pip install requests beautifulsoup4
 
     - name: Uruchomienie skryptu scrapera
-      run: python scraper.py
+      run: |
+        if [ -f "scrapter.py" ]; then
+          python scrapter.py
+        else
+          python scraper.py
+        fi
 
     - name: Automatyczny zapis pliku JSON w repozytorium
       run: |
